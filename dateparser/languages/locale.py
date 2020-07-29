@@ -48,6 +48,9 @@ class Locale(object):
         self.shortname = shortname
         locale_specific_info = language_info.get("locale_specific", {}).get(shortname, {})
         self.info = combine_dicts(language_info, locale_specific_info)
+        # import pprint
+        # pp = pprint.PrettyPrinter(indent=4)
+        # pp.pprint(language_info)
         self.info.pop("locale_specific", None)
 
     def is_applicable(self, date_string, strip_timezone=False, settings=None):
@@ -64,6 +67,7 @@ class Locale(object):
 
         :return: boolean value representing if the locale is applicable for the date string or not.
         """
+        # print("is applicable")
         if strip_timezone:
             date_string, _ = pop_tz_offset_from_string(date_string, as_offset=False)
 
@@ -73,7 +77,7 @@ class Locale(object):
         date_string = self._simplify(date_string, settings=settings)
         dictionary = self._get_dictionary(settings)
         date_tokens = dictionary.split(date_string)
-
+        # print(dictionary.are_tokens_valid(date_tokens))
         return dictionary.are_tokens_valid(date_tokens)
 
     def count_applicability(self, text, strip_timezone=False, settings=None):
@@ -131,6 +135,8 @@ class Locale(object):
         date_string = self._simplify(date_string, settings=settings)
         dictionary = self._get_dictionary(settings)
         date_string_tokens = dictionary.split(date_string, keep_formatting)
+        print("date string in translate:", date_string)
+        print(date_string_tokens)
 
         relative_translations = self._get_relative_translations(settings=settings)
 

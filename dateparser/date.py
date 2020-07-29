@@ -182,9 +182,11 @@ class _DateLocaleParser(object):
     @classmethod
     def parse(cls, locale, date_string, date_formats=None, settings=None):
         instance = cls(locale, date_string, date_formats, settings)
+        print("date string in paarse in date.py", date_string)
         return instance._parse()
 
     def _parse(self):
+        print(self._settings.PARSERS)
         for parser_name in self._settings.PARSERS:
             date_obj = self._parsers[parser_name]()
             if self._is_valid_date_obj(date_obj):
@@ -231,6 +233,7 @@ class _DateLocaleParser(object):
         )
 
     def _get_translated_date(self):
+        print("self._translated_date:",self._translated_date)
         if self._translated_date is None:
             self._translated_date = self.locale.translate(
                 self.date_string, keep_formatting=False, settings=self._settings)
@@ -243,6 +246,7 @@ class _DateLocaleParser(object):
         return self._translated_date_with_formatting
 
     def _is_valid_date_obj(self, date_obj):
+        print("date_obj:", date_obj)
         if not isinstance(date_obj, dict):
             return False
         if len(date_obj) != 2:
@@ -387,10 +391,15 @@ class DateDataParser(object):
 
         date_string = sanitize_date(date_string)
 
+        print("date string in date.py:", date_string)
+
         for locale in self._get_applicable_locales(date_string):
+            print("locale:", locale.shortname)
             parsed_date = _DateLocaleParser.parse(
                 locale, date_string, date_formats, settings=self._settings)
+            print("right before if parsed_date")
             if parsed_date:
+                print("parsed_date")
                 parsed_date['locale'] = locale.shortname
                 if self.try_previous_locales:
                     self.previous_locales.add(locale)
@@ -404,6 +413,7 @@ class DateDataParser(object):
         return date_tuple(**date_data)
 
     def _get_applicable_locales(self, date_string):
+        print("in _get_applicable_locales")
         pop_tz_cache = []
 
         def date_strings():
@@ -432,7 +442,10 @@ class DateDataParser(object):
                 languages=self.languages, locales=self.locales, region=self.region,
                 use_given_order=self.use_given_order):
             for s in date_strings():
+                print("in line 436")
+                print(s)
                 if self._is_applicable_locale(locale, s):
+                    print("in line 438")
                     yield locale
 
     def _is_applicable_locale(self, locale, date_string):
