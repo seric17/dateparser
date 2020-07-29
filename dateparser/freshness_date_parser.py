@@ -21,7 +21,6 @@ class FreshnessDateDataParser(object):
     """ Parses date string like "1 year, 2 months ago" and "3 hours, 50 minutes ago" """
     def __init__(self):
         self.now = None
-        # print("in freshness")
 
     def _are_all_words_units(self, date_string):
         skip = [_UNITS,
@@ -32,10 +31,6 @@ class FreshnessDateDataParser(object):
 
         words = filter(lambda x: x if x else False, re.split(r'\W', date_string))
         words = filter(lambda x: not re.match(r'%s' % '|'.join(skip), x), words)
-        # print("IN are all words")
-        # print(date_string)
-        # print(not list(words))
-        print("DATE STRING:", date_string)
         return not list(words)
 
     def _parse_time(self, date_string, settings):
@@ -51,14 +46,12 @@ class FreshnessDateDataParser(object):
         return get_localzone()
 
     def parse(self, date_string, settings):
-        print(date_string)
         date_string = strip_braces(date_string)
         date_string, ptz = pop_tz_offset_from_string(date_string)
         _time = self._parse_time(date_string, settings)
 
         _settings_tz = settings.TIMEZONE.lower()
 
-        print("date string in parse in freshness:", date_string)
         def apply_time(dateobj, timeobj):
             if not isinstance(_time, time):
                 return dateobj
@@ -120,7 +113,6 @@ class FreshnessDateDataParser(object):
             return None, None
 
         kwargs = self.get_kwargs(date_string)
-        # print("KWAGS:", kwargs)
         if not kwargs:
             return None, None
 
@@ -130,13 +122,8 @@ class FreshnessDateDataParser(object):
                 if k in kwargs:
                     period = k[:-1]
                     break
-        # print("period:", period)
         td = relativedelta(**kwargs)
-        print("after **kwargs")
-        print(td)
-        print(date_string)
-        if re.search(r'\bin\b', date_string):
-            print("has in")
+
         if (
             re.search(r'\bin\b', date_string) or
             re.search(r'\bfuture\b', prefer_dates_from) and
@@ -153,7 +140,6 @@ class FreshnessDateDataParser(object):
             return {}
 
         kwargs = {}
-        # print(m)
         for num, unit in m:
             kwargs[unit + 's'] = int(num)
         if 'decades' in kwargs:
@@ -163,11 +149,9 @@ class FreshnessDateDataParser(object):
             else:
                 kwargs['years'] = 10 * num_decades
             del kwargs['decades']
-        print("KWARGS IN GET_KWARGS:", kwargs)
         return kwargs
 
     def get_date_data(self, date_string, settings=None):
-        print("date_string in get_date_data:", date_string)
         date, period = self.parse(date_string, settings)
         return dict(date_obj=date, period=period)
 

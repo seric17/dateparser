@@ -49,10 +49,6 @@ class Dictionary(object):
     _match_relative_regex_cache = {}
 
     def __init__(self, locale_info, settings=None):
-        # print("in init dict")
-        import pprint
-        pp = pprint.PrettyPrinter(indent=4)
-        # pp.pprint(locale_info)
         dictionary = {}
         self._settings = settings
         self.info = locale_info
@@ -84,8 +80,6 @@ class Dictionary(object):
 
         relative_type_regex = locale_info.get("relative-type-regex", {})
         self._relative_strings = list(chain.from_iterable(relative_type_regex.values()))
-        # pp.pprint(self._dictionary)
-        # print(self._relative_strings)
 
     def __contains__(self, key):
         if key in self._settings.SKIP_TOKENS:
@@ -119,7 +113,6 @@ class Dictionary(object):
             if token.isdigit() or match_relative_regex.match(token) or token in self:
                 continue
             else:
-                # print(match_relative_regex)
                 return False
         else:
             return True
