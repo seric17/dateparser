@@ -181,6 +181,7 @@ class _DateLocaleParser(object):
 
     @classmethod
     def parse(cls, locale, date_string, date_formats=None, settings=None):
+        # print("in parse in date", date_string)
         instance = cls(locale, date_string, date_formats, settings)
         return instance._parse()
 
@@ -386,8 +387,10 @@ class DateDataParser(object):
             return res
 
         date_string = sanitize_date(date_string)
+        # print("in getdatedata", date_string)
 
         for locale in self._get_applicable_locales(date_string):
+            # print("in for loop")
             parsed_date = _DateLocaleParser.parse(
                 locale, date_string, date_formats, settings=self._settings)
             if parsed_date:
@@ -431,7 +434,9 @@ class DateDataParser(object):
         for locale in self._get_locale_loader().get_locales(
                 languages=self.languages, locales=self.locales, region=self.region,
                 use_given_order=self.use_given_order):
+            # print("in locale loop")
             for s in date_strings():
+                # print("in date_strings", s)
                 if self._is_applicable_locale(locale, s):
                     yield locale
 

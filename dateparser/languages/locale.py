@@ -73,6 +73,7 @@ class Locale(object):
         date_string = self._simplify(date_string, settings=settings)
         dictionary = self._get_dictionary(settings)
         date_tokens = dictionary.split(date_string)
+        # print("date_tokens", date_tokens)
         return dictionary.are_tokens_valid(date_tokens)
 
     def count_applicability(self, text, strip_timezone=False, settings=None):

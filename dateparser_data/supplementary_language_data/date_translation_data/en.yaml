@@ -9,6 +9,9 @@ tuesday:
 september:
     - sept
 
+decade:
+    - decade
+    - decades
 year:
     - years
 month:

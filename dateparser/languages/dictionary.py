@@ -107,9 +107,11 @@ class Dictionary(object):
         has_only_keep_tokens = not set(tokens) - set(ALWAYS_KEEP_TOKENS)
         if has_only_keep_tokens:
             return False
-
+        # print("before regex")
         match_relative_regex = self._get_match_relative_regex_cache()
         for token in tokens:
+            # print(token)
+            # print(token.isdigit(), match_relative_regex.match(token), token in self)
             if token.isdigit() or match_relative_regex.match(token) or token in self:
                 continue
             else:

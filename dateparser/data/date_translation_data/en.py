@@ -769,6 +769,10 @@ info = {
         "of"
     ],
     "sentence_splitter_group": 1,
+    "decade": [
+        "decade",
+        "decades"
+    ],
     "ago": [
         "ago"
     ],
